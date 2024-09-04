@@ -43,3 +43,49 @@ Rayfield:Notify({
    },
 },
 })
+
+local AutofarmButton = MainTab:CreateButton({
+   Name = "Autofarm",
+   Callback = function()
+      -- Define a function to generate random 4-character strings
+local function generateRandomString()
+    local chars = "0123456789"
+    local str = ""
+    for i = 1, 4 do
+        local randomIndex = math.random(1, #chars)
+        str = str .. chars:sub(randomIndex, randomIndex)
+    end
+    return str
+end
+
+-- Function to attack objects
+local function attackObject(object)
+    -- Simulate a click on the object (this may vary depending on the game)
+    game:GetService("Players").LocalPlayer:InputBegin(Enum.UserInputType.MouseButton1)
+    game:GetService("Players").LocalPlayer:InputEnd(Enum.UserInputType.MouseButton1)
+end
+
+-- Main loop to continuously find and attack objects
+while true do
+    local workspaceObjects = workspace.__THINGS:GetChildren()
+
+    -- Iterate through all objects in workspace.__THINGS
+    for _, object in pairs(workspaceObjects) do
+        -- Check if the object is a Coin, Chest, or Gift
+        if object:FindFirstChild("POS") then
+            local objectName = object.Name
+            
+            -- Check if the object name is a 4-character string
+            if #objectName == 4 and tonumber(objectName) then
+                -- Attack the object
+                attackObject(object)
+            end
+        end
+    end
+    
+    -- Wait for a short duration before searching again
+    wait(0.1)
+end
+
+   end,
+})
